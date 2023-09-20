@@ -1,21 +1,12 @@
-﻿
-
-using Client;
-using Client.Models;
+﻿using Client.Models;
+using Client.Services;
 using Core.Models;
 
 internal class Program
 {
-
-    private static CustomerCategory[] CustomerCategories = new CustomerCategory[]
-    {
-        new CustomerCategory { Type = CustomerType.Normal, InterestRate = 6.0 },
-        new CustomerCategory { Type = CustomerType.SeniorCitizen, InterestRate = 7.5 },
-    }; 
-
     private static void Main(string[] args)
     {
-        var summaryService = Summary.GetInstance();
+        var dataStore = DataStore.GetInstance();
 
         while (true)
         {
@@ -24,9 +15,9 @@ internal class Program
                 Console.WriteLine("Main Menu");
                 Console.WriteLine("----------");
                 Console.WriteLine("Please select an option");
-                Console.WriteLine("1. Configure Settings");
-                Console.WriteLine("2. Calculate FD Returns");
-                Console.WriteLine("3. Summary Report");
+                Console.WriteLine("1. Configure settings");
+                Console.WriteLine("2. Add customer and deposit details");
+                Console.WriteLine("3. Summary report");
                 Console.WriteLine("4. Exit");
                 Console.WriteLine("----------");
 
@@ -35,15 +26,13 @@ internal class Program
                 switch (choice)
                 {
                     case MenuOptions.ConfigureMenu :
-                        ConfigureOptions.DisplayMenu(CustomerCategories);
+                        OptionsDisplayService.DisplayMenu();
                         break;
                     case MenuOptions.CalculateFDReturns: 
-                        var maturityAmount = CalculateReturns.GetUserInformationAndUpdateSummary(CustomerCategories);
-                        summaryService.IncrementUserCount();
-                        summaryService.UpdateCumulativeReturns(maturityAmount);
+                        DepositDisplayService.GetUserInformationAndUpdateSummary();
                         break;
                     case MenuOptions.SummaryReport:
-                        summaryService.PrintSummary();
+                        SummaryDisplayService.PrintSummary();
                         break;
                     case MenuOptions.Exit:
                         Environment.Exit(0);

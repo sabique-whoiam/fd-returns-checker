@@ -1,17 +1,19 @@
 namespace Core.Models
 {
-    public class DepositDetails
+    internal class DepositDetails
     {
-        public DepositDetails(double amount, int durationInMonths)
+        internal DepositDetails(double amount, int durationInMonths, double interestRate)
         {
             Amount = amount;
             DurationInMonths = durationInMonths;
+            FixedInterestRate = interestRate;
         }
 
         private double Amount { get; set; }
         private int DurationInMonths { get; set; }
+        private double FixedInterestRate { get; set; }
 
-        public double CalculateReturns(double interestRate)
+        internal double CalculateReturns()
         {
             /*
                 Maturity Amount (A) = P × (1 + r/n)^(n*t)
@@ -24,7 +26,7 @@ namespace Core.Models
             */
 
             var P = Amount;
-            var r = interestRate / 100;
+            var r = FixedInterestRate / 100;
             var n = 1.0;
             var t = DurationInMonths / 12.0;
 
@@ -32,13 +34,13 @@ namespace Core.Models
             return A;
         }
 
-        public double CalculateInterest(double interestRate) 
+        internal double CalculateInterest()
         {
 
             // Interest Earned (I) = A - P;
             var P = Amount;
-            var A = CalculateReturns(interestRate);
-            var I = A  - P;
+            var A = CalculateReturns();
+            var I = A - P;
             return I;
         }
     }
