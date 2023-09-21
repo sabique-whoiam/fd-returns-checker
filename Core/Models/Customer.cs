@@ -1,8 +1,11 @@
 namespace Core.Models
 {
+    /// <summary>
+    /// Class to represent a Customer in the sytem. 
+    /// </summary>
     public class Customer: User
     {
-        private const int SeniorCitizenAgeCutOff = 60;
+        private const int _seniorCitizenAgeCutOff = 60;
         private DepositDetails DepositDetails{ get; set; }
 
         public Customer(string name, string dateOfBirth, string phone) : base(name, dateOfBirth, phone)
@@ -12,7 +15,7 @@ namespace Core.Models
         public CustomerType GetCustomerType()
         {
             var age = CalculateAge();
-            if (age > SeniorCitizenAgeCutOff)
+            if (age > _seniorCitizenAgeCutOff)
             {
                 return CustomerType.SeniorCitizen;
             }

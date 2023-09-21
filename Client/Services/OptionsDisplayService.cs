@@ -3,9 +3,13 @@ using Core.Models;
 
 namespace Client.Services
 {
+    /// <summary>
+    /// Service to configure interest rate customer types.
+    /// Currently available customer types are senior citizen and normal citizen
+    /// </summary>
     public static class OptionsDisplayService
     {
-        private static readonly DataStore dataStore = DataStore.GetInstance();
+        private static readonly DataStore _dataStore = DataStore.GetInstance();
 
         public static void DisplayMenu()
         {
@@ -14,8 +18,8 @@ namespace Client.Services
                 Console.WriteLine("Configure Interest rates");
                 Console.WriteLine("------------------------");
                 Console.WriteLine("Select the customer type you would like to modify");
-                Console.WriteLine($"1. CustomerType: {CustomerType.SeniorCitizen}, Current Interest Rate: {dataStore.GetCustomerInfo(CustomerType.SeniorCitizen).GetInterestRate()}");
-                Console.WriteLine($"2. CustomerType: {CustomerType.NormalCitizen}, Current Interest Rate: {dataStore.GetCustomerInfo(CustomerType.NormalCitizen).GetInterestRate()}");
+                Console.WriteLine($"1. CustomerType: {CustomerType.SeniorCitizen}, Current Interest Rate: {_dataStore.GetCustomerInfo(CustomerType.SeniorCitizen).GetInterestRate()}");
+                Console.WriteLine($"2. CustomerType: {CustomerType.NormalCitizen}, Current Interest Rate: {_dataStore.GetCustomerInfo(CustomerType.NormalCitizen).GetInterestRate()}");
                 Console.WriteLine("3. Return to main menu");
 
                 var choice = Enum.Parse<CustomerType>(Console.ReadLine());
@@ -47,7 +51,7 @@ namespace Client.Services
                 Console.WriteLine("Invalid interest rate entered");
             }
 
-            dataStore.GetCustomerInfo(customerType).UpdateInterestRate(interestRate);
+            _dataStore.GetCustomerInfo(customerType).UpdateInterestRate(interestRate);
             Console.WriteLine($"Interest rate updated for the customer type: {customerType}");
         }
     }

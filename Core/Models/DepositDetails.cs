@@ -1,17 +1,21 @@
 namespace Core.Models
 {
+    /// <summary>
+    /// Class to store and calculate deposit details for a customer.
+    /// The interest rate is set as readonly and is fixed when a deposit is created. It should not change even if the interest rate of a customer type is changed in the future.
+    /// </summary>
     internal class DepositDetails
     {
         internal DepositDetails(double amount, int durationInMonths, double interestRate)
         {
-            Amount = amount;
-            DurationInMonths = durationInMonths;
-            FixedInterestRate = interestRate;
+            this.Amount = amount;
+            this.DurationInMonths = durationInMonths;
+            _fixedInterestRate = interestRate;
         }
 
         private double Amount { get; set; }
         private int DurationInMonths { get; set; }
-        private double FixedInterestRate { get; set; }
+        private readonly double _fixedInterestRate;
 
         internal double CalculateReturns()
         {
@@ -26,7 +30,7 @@ namespace Core.Models
             */
 
             var P = Amount;
-            var r = FixedInterestRate / 100;
+            var r = _fixedInterestRate / 100;
             var n = 1.0;
             var t = DurationInMonths / 12.0;
 

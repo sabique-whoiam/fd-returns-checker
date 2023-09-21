@@ -4,10 +4,12 @@ using Core.Models;
 
 internal class Program
 {
+    /// <summary> 
+    /// A while loop is used to ensure that the main menu is displayed until user chooses to exit
+    /// </summary>
+    /// <param name="args"></param>
     private static void Main(string[] args)
-    {
-        var dataStore = DataStore.GetInstance();
-
+    {        
         while (true)
         {
             try
@@ -21,6 +23,7 @@ internal class Program
                 Console.WriteLine("4. Exit");
                 Console.WriteLine("----------");
 
+                // Parsing int value entered to MenuOptions Enum
                 var choice = (MenuOptions)int.Parse(Console.ReadLine());
 
                 switch (choice)
@@ -42,6 +45,7 @@ internal class Program
                         break;
                 }
             }
+            // This is the global exception which currently catches all the exceptions including invalid inputs. Feel free to write custom exceptions and handle them as per requirements.
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);

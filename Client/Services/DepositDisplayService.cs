@@ -3,16 +3,19 @@ using Core.Models;
 
 namespace Client.Services
 {
+    /// <summary>
+    /// Serive to add a user and enter deposit details
+    /// </summary>
     public static class DepositDisplayService
     {
-        private static readonly DataStore dataStore = DataStore.GetInstance();
+        private static readonly DataStore _dataStore = DataStore.GetInstance();
         
         public static void GetUserInformationAndUpdateSummary()
         {
             {
                 var customer = CollectUserInformation();
                 var interestRate = GetInterestRateAndPrint(customer);
-                dataStore.AddCustomer(customer);
+                _dataStore.AddCustomer(customer);
                 CalculateMaturityAmountAndPrint(customer, interestRate);
             }
         }
@@ -35,7 +38,7 @@ namespace Client.Services
         {
             var customerType = customer.GetCustomerType();
             Console.WriteLine($"Customer Type is: {customerType}");
-            var interestRate = dataStore.GetCustomerInfo(customerType).GetInterestRate();
+            var interestRate = _dataStore.GetCustomerInfo(customerType).GetInterestRate();
             Console.WriteLine($"Available interest rate is: {interestRate}%");
             return interestRate;
         }
