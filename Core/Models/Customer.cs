@@ -18,7 +18,7 @@ namespace Core.Models
             }
             else 
             {
-                return CustomerType.Normal;
+                return CustomerType.NormalCitizen;
             }
         }
 

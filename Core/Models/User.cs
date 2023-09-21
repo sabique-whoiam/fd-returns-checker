@@ -11,7 +11,7 @@ namespace Core.Models
         }
 
         protected Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; private set; }
         protected DateTime DateOfBirth { get; set; }
         protected string PhoneNumber { get; set; }
         protected string EmailAddress { get; set; }

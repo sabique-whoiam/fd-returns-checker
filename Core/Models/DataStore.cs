@@ -2,10 +2,18 @@ namespace Core.Models
 {
     public sealed class DataStore
     {
-        private DataStore() { }
+        private DataStore() 
+        { 
+            seniorCustomer = new SeniorCitizen(defaultInterestRateForSeniorCitizen);
+            normalCustomer = new NormalCitizen(defaultInterestRateForNormal);
+        }
         private static DataStore? _instance = null;
-
         private const int maxUserCount = 20;
+        private const double defaultInterestRateForSeniorCitizen = 6.5;
+        private const double defaultInterestRateForNormal = 6;
+
+        private readonly ICustomerInfo seniorCustomer;
+        private readonly ICustomerInfo normalCustomer;
 
         public Customer[] Customers { get; private set; } = new Customer[maxUserCount];
         public int UserCount { get; private set; } = 0;
@@ -20,11 +28,19 @@ namespace Core.Models
             return _instance;
         }
 
-        public readonly CustomerCategory[] CustomerCategories = new CustomerCategory[]
+        public ICustomerInfo GetCustomerInfo(CustomerType customerType)
         {
-            new CustomerCategory { Type = CustomerType.Normal, InterestRate = 6.0 },
-            new CustomerCategory { Type = CustomerType.SeniorCitizen, InterestRate = 7.5 },
-        };
+            if (customerType == CustomerType.NormalCitizen) 
+            {
+                return normalCustomer;
+            }
+            else if(customerType == CustomerType.SeniorCitizen)
+            {
+                return seniorCustomer;
+            }
+
+            throw new Exception("Invalid customer type");
+        }
 
         public void AddCustomer(Customer user)
         {

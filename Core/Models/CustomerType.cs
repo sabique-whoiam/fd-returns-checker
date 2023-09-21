@@ -2,7 +2,7 @@ namespace Core.Models
 {
     public enum CustomerType
     {
-        SeniorCitizen,
-        Normal
+        SeniorCitizen = 1,
+        NormalCitizen = 2
     }
 }

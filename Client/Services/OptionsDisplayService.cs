@@ -5,47 +5,50 @@ namespace Client.Services
 {
     public static class OptionsDisplayService
     {
+        private static readonly DataStore dataStore = DataStore.GetInstance();
 
-        private static DataStore dataStore = DataStore.GetInstance();
-        
         public static void DisplayMenu()
         {
-            Console.WriteLine("Configure Interest rates");
-            Console.WriteLine("------------------------");
-
             while (true)
             {
+                Console.WriteLine("Configure Interest rates");
+                Console.WriteLine("------------------------");
                 Console.WriteLine("Select the customer type you would like to modify");
-                int i;
-                for (i = 0; i < dataStore.CustomerCategories.Length; i++)
+                Console.WriteLine($"1. CustomerType: {CustomerType.SeniorCitizen}, Current Interest Rate: {dataStore.GetCustomerInfo(CustomerType.SeniorCitizen).GetInterestRate()}");
+                Console.WriteLine($"2. CustomerType: {CustomerType.NormalCitizen}, Current Interest Rate: {dataStore.GetCustomerInfo(CustomerType.NormalCitizen).GetInterestRate()}");
+                Console.WriteLine("3. Return to main menu");
+
+                var choice = Enum.Parse<CustomerType>(Console.ReadLine());
+
+                switch (choice)
                 {
-                    Console.WriteLine($"{i + 1}. CustomerType: {dataStore.CustomerCategories[i].Type}, Interest rate: {dataStore.CustomerCategories[i].InterestRate}%");
+                    case CustomerType.NormalCitizen or CustomerType.SeniorCitizen:
+                        CollectAndUpdateInterestRate(choice);
+                        break;
+
+                    case (CustomerType)3:
+                        return;
+
+                    default:
+                        Console.WriteLine("Invalid choice entered. Please try again");
+                        break;
                 }
-                Console.WriteLine($"{i + 1}. Return to main screen");
-
-                var selectedOption = Int32.Parse(Console.ReadLine());
-                if(selectedOption < 0 || selectedOption >= dataStore.CustomerCategories.Length + 2) 
-                {
-                    Console.WriteLine($"Invalid option selected");
-                    continue;
-                }
-
-                if(selectedOption == dataStore.CustomerCategories.Length + 1) 
-                {
-                    break;
-                }
-
-                Console.WriteLine($"Enter the new interest rate for customer type: {dataStore.CustomerCategories[selectedOption-1].Type}");
-                var interestRate = double.Parse(Console.ReadLine());
-
-                if(interestRate < 0.1 || interestRate > 100) 
-                {
-                    Console.WriteLine("Invalid interest rate entered");
-                }
-
-                dataStore.CustomerCategories[selectedOption-1].InterestRate = interestRate;
-                Console.WriteLine($"Interest rate updated for the customer type: {dataStore.CustomerCategories[selectedOption-1].Type}");
             }
+
+        }
+
+        public static void CollectAndUpdateInterestRate(CustomerType customerType)
+        {
+            Console.WriteLine($"Enter the new interest rate for customer type: {customerType}");
+            var interestRate = double.Parse(Console.ReadLine());
+
+            if (interestRate < 0.1 || interestRate > 100)
+            {
+                Console.WriteLine("Invalid interest rate entered");
+            }
+
+            dataStore.GetCustomerInfo(customerType).UpdateInterestRate(interestRate);
+            Console.WriteLine($"Interest rate updated for the customer type: {customerType}");
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Client.Services
 {
     public static class DepositDisplayService
     {
-        private static DataStore dataStore = DataStore.GetInstance();
+        private static readonly DataStore dataStore = DataStore.GetInstance();
         
         public static void GetUserInformationAndUpdateSummary()
         {
@@ -35,7 +35,7 @@ namespace Client.Services
         {
             var customerType = customer.GetCustomerType();
             Console.WriteLine($"Customer Type is: {customerType}");
-            var interestRate = dataStore.CustomerCategories.GetInterestRateByCategory(customerType);
+            var interestRate = dataStore.GetCustomerInfo(customerType).GetInterestRate();
             Console.WriteLine($"Available interest rate is: {interestRate}%");
             return interestRate;
         }
